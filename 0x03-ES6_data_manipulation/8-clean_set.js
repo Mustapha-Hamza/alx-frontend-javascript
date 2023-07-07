@@ -1,14 +1,23 @@
 export default function cleanSet(set, startString) {
-  let text = '';
-  const array = [];
+  if (!(set instanceof Set)) {
+    throw new TypeError('set must be a set');
+  } else if (typeof startString !== 'string') {
+    throw new TypeError('startString must be a string');
+  }
 
-  if (startString && typeof startString === 'string') {
-    for (const element of set) {
-      if (element && element.startsWith(startString)) {
-        array.push(element.slice(startString.length));
+  if (!startString || startString === '') return '';
+
+  let output = '';
+
+  set.forEach((value) => {
+    if (value.includes(startString)) {
+      if (output === '') {
+        output += value.replace(startString, '');
+      } else {
+        output += `-${value.replace(startString, '')}`;
       }
     }
-    text = array.join('-');
-  }
-  return text;
+  });
+
+  return output;
 }
